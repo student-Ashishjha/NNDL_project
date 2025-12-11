@@ -1,149 +1,130 @@
-# NNDL_project
-1. Dataset
+🔍 High-Accuracy Real vs Fake Face Classification Using Deep Learning
+<p align="center"> <img src="https://github.com/user-attachments/assets/detective-ai.gif" width="250"> </p> <p align="center"> <b>⚡ A powerful AI system that detects Deepfake facial images with up to 99% accuracy.</b><br> Built using a Custom Convolutional Neural Network trained on FFHQ (Real) and TPDNE (Fake) datasets. </p>
+Deepfakes have become one of the biggest digital threats in today’s world.
+This project builds a Deepfake Detection System using a Custom CNN capable of identifying Real vs AI-generated faces with exceptional accuracy.
 
-Two Kaggle datasets are used:
+The model learns subtle manipulation patterns, unnatural textures, and inconsistencies in fake images that are invisible to the human eye.
 
-FFHQ Face Dataset → Real images
 
-ThisPersonDoesNotExist 10k Dataset → AI-generated fake images
 
-6,000 images (3,000 real + 3,000 fake) were used for training and validation.
 
-🛠️ 2. Image Preprocessing
 
-Images resized to 128 × 128 × 3
+✔ Achieves 98–99% validation accuracy
+✔ Trained on 6000 high-quality images
+✔ Custom CNN architecture — no transfer learning used
+✔ Includes evaluation metrics, ROC curve, and confusion matrix
+✔ User-friendly prediction module
 
-Converted to NumPy arrays
+Project Architecture
 
-Pixel normalization to [0,1]
+             ┌────────────────────┐
+             │  Dataset Loading   │
+             └────────┬───────────┘
+                      │
+             ┌────────▼───────────┐
+             │  Image Preprocess  │
+             └────────┬───────────┘
+                      │
+             ┌────────▼───────────┐
+             │   CNN Model Build  │
+             └────────┬───────────┘
+                      │
+             ┌────────▼───────────┐
+             │   Model Training   │
+             └────────┬───────────┘
+                      │
+             ┌────────▼───────────┐
+             │ Model Evaluation   │
+             └────────┬───────────┘
+                      │
+             ┌────────▼───────────┐
+             │   Prediction App    │
+             └─────────────────────┘
+Dataset Used:
+| Dataset Name                       | Type | Count |
+| ---------------------------------- | ---- | ----- |
+| **FFHQ Face Dataset**              | Real | 3,000 |
+| **ThisPersonDoesNotExist (TPDNE)** | Fake | 3,000 |
+Total images used: 6,000
+Split: 80% Train — 20% Validation
 
-Labels:
+Image Preprocessing
+
+✔ Resize to 128 × 128 × 3
+✔ Convert to NumPy array
+✔ Normalize pixel values to 0–1
+✔ Encode labels:
 
 0 → Real
 
 1 → Fake
 
-Dataset split:
+Model Architecture (Custom CNN)
+🔹 Convolutional Layers
 
-80% Training
-
-20% Validation
-
-🧩 3. Model Architecture
-
-A custom CNN (no transfer learning) is used.
-
-🔹 Key Components:
-
-Multiple Conv2D layers (filters: 64 → 32 → 16)
+Filters: 64 → 32 → 16
 
 ReLU activation
 
-Dilated convolutions
+Dilated Convolution for wider context
 
-MaxPooling2D
+🔹 Pooling Layers
 
-GlobalAveragePooling2D
+MaxPooling2D for feature downsampling
 
-Dense layers (400 → 512 → 400)
+🔹 Dense Layers
 
-Dropout (0.5)
+400 → 512 → 400 neurons
 
-Output layer: Dense(2) + Sigmoid
+Dropout (0.5) for regularization
 
-🛠 Model Compilation:
+🔹 Output Layer
 
-Loss: Binary Crossentropy
+Dense(2) + Sigmoid activation
 
-Optimizer: Adam (LR = 1e-5)
+🔹 Compilation
+loss = 'binary_crossentropy'
+optimizer = Adam(learning_rate=1e-5)
+metrics = ['accuracy']
 
-Metrics: Accuracy
 
-🏋️ 4. Model Training
-
-Training is performed using:
-
-Batch size: 32
+Training Summary
 
 Epochs: 100
 
-Validation tracking
+Batch Size: 32
 
-ModelCheckpoint to save best weights
+Callback: ModelCheckpoint (saves best model automatically)
 
-Visualizations:
+Performance Visualization:
 
-Training vs Validation Accuracy
+Accuracy curves
 
-Training vs Validation Loss
+Loss curves
+    | Metric        | Score     |
+    | ------------- | --------- |
+    | **Accuracy**  | 99%       |
+    | **Precision** | 99.17%    |
+    | **Recall**    | 98.85%    |
+    | **Loss**      | Very Low  |
+    | **AUC**       | Excellent |
 
-📊 5. Model Evaluation
+Prediction Module
 
-Evaluation metrics used:
+✔ Upload any face image
+✔ Automatically preprocess
+✔ Model predicts:Real Face   OR   Fake (AI-Generated)
 
-Accuracy
+Hardware Requirements
 
-Precision
+CPU — supported (slow)
 
-Recall
+💡 GPU recommended (NVIDIA Tesla T4 / P100 / V100)
 
-Confusion Matrix
+Implemented on Kaggle GPU Environment
 
-ROC Curve & AUC
+🏁 Conclusion
 
-The best model achieved:
+The Deepfake Detection System proves the capability of Custom CNNs to accurately identify manipulated facial images.
+It serves as a powerful tool for digital forensics, security agencies, and social media verification pipelines.
 
-Accuracy: ~99%
-
-Precision: ~99.17%
-
-Recall: ~98.85%
-
-🔍 6. Prediction Module
-
-To classify a new image:
-
-Upload an image
-
-Preprocess: resize → normalize → expand dims
-
-Run through trained model
-
-Output:
-
-Real Face
-
-Fake (AI-Generated) Face
-
-Confidence score displayed
-
-Example:
-
-input_arr = img_to_array(load_img("image.png", target_size=(128,128,3))) / 255.0
-input_arr = np.expand_dims(input_arr, axis=0)
-prediction = np.argmax(model.predict(input_arr))
-
-🖥️ 7. Hardware Requirements
-
-Works on CPU
-
-GPU recommended for training
-
-Implementation done in Kaggle GPU Environment
-
-📚 8. References
-
-FaceForensics++ (Rossler et al., 2019)
-
-MesoNet (Afchar et al., 2018)
-
-Deepfake Detection Survey (Tolosana et al., 2020)
-
-Capsule-Forensics (Nguyen et al., 2019)
-
-TensorFlow Official Documentation
-
-🎯 Conclusion
-
-This project demonstrates how deep learning can effectively identify deepfake images by learning manipulation artifacts that are hard for humans to detect.
-The system achieves high accuracy and can be extended to video-based deepfake detection, real-time inference, or integrated into security and verification systems.
